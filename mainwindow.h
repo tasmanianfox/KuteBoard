@@ -19,6 +19,10 @@ public:
 private slots:
     void on_actionExit_triggered();
 
+    void on_openGLWidget_frameSwapped();
+
+    void on_openGLWidget_resized();
+
 private:
     Ui::MainWindow *ui;
 };

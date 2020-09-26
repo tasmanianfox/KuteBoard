@@ -18,7 +18,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,1">
       <item>
-       <widget class="QOpenGLWidget" name="openGLWidget"/>
+       <widget class="Board" name="openGLWidget"/>
       </item>
       <item>
        <widget class="QFrame" name="frame">
@@ -108,6 +108,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Board</class>
+   <extends>QOpenGLWidget</extends>
+   <header location="global">src/ui/main_window/board.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

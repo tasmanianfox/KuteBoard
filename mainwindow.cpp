@@ -18,3 +18,13 @@ void MainWindow::on_actionExit_triggered()
 {
     QApplication::quit();
 }
+
+void MainWindow::on_openGLWidget_frameSwapped()
+{
+
+}
+
+void MainWindow::on_openGLWidget_resized()
+{
+
+}

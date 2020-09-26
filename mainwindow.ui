@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,1">
+      <item>
+       <widget class="QOpenGLWidget" name="openGLWidget"/>
+      </item>
+      <item>
+       <widget class="QFrame" name="frame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuNew">
+    <property name="title">
+     <string>New</string>
+    </property>
+    <widget class="QMenu" name="menuPlay_vs_bot">
+     <property name="title">
+      <string>Play vs bot</string>
+     </property>
+     <addaction name="actionPlay_now"/>
+     <addaction name="actionEngine_settings"/>
+    </widget>
+    <widget class="QMenu" name="menuPlay_online">
+     <property name="title">
+      <string>Play online</string>
+     </property>
+     <addaction name="actionLog_in"/>
+     <addaction name="actionSeek"/>
+     <addaction name="actionLog_out"/>
+    </widget>
+    <addaction name="actionQuick_play"/>
+    <addaction name="separator"/>
+    <addaction name="menuPlay_vs_bot"/>
+    <addaction name="menuPlay_online"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <addaction name="menuNew"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionPlay_now">
+   <property name="text">
+    <string>Play now</string>
+   </property>
+  </action>
+  <action name="actionEngine_settings">
+   <property name="text">
+    <string>Engine settings</string>
+   </property>
+  </action>
+  <action name="actionLog_in">
+   <property name="text">
+    <string>Log in</string>
+   </property>
+  </action>
+  <action name="actionSeek">
+   <property name="text">
+    <string>Seek</string>
+   </property>
+  </action>
+  <action name="actionLog_out">
+   <property name="text">
+    <string>Log out</string>
+   </property>
+  </action>
+  <action name="actionQuick_play">
+   <property name="text">
+    <string>Quick play</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

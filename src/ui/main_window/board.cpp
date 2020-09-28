@@ -15,16 +15,19 @@ void Board::initializeGL()
         qDebug("load image fail");
         return;
     }
+    QImage tex = QGLWidget::convertToGLFormat(image);
+
+    this->boardTexture = Texture();
+    this->boardTexture.height = tex.height();
+    this->boardTexture.width = tex.width();
 
     glEnable(GL_TEXTURE_2D); // Enable texturing
 
-    glGenTextures(1, &this->textureID); // Obtain an id for the texture
-    glBindTexture(GL_TEXTURE_2D, this->textureID); // Set as the current texture
+    glGenTextures(1, &this->boardTexture.textureID); // Obtain an id for the texture
+    glBindTexture(GL_TEXTURE_2D, this->boardTexture.textureID); // Set as the current texture
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-
-    this->tex = QGLWidget::convertToGLFormat(image);
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex.width(), tex.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, tex.bits());
 
@@ -36,17 +39,25 @@ void Board::initializeGL()
 
 void Board::paintGL()
 {
-    glClearColor(0.4f, 0.1f, 0.1f, 1.0f);
+    glClearColor(0.16f, 0.16f, 0.16f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, this->textureID);
+    glBindTexture(GL_TEXTURE_2D, this->boardTexture.textureID);
 
     glBegin(GL_QUADS);
-        glTexCoord2f(0,0); glVertex3f(-1, -1, -1);
-        glTexCoord2f(1,0); glVertex3f(1, -1, -1);
-        glTexCoord2f(1,1); glVertex3f(1, 1, -1);
-        glTexCoord2f(0,1); glVertex3f(-1, 1, -1);
+
+    float minDimension = std::min(this->width(), this->height());
+    float ratioH = std::max((double)((float)this->width() / minDimension), 1.0);
+    float ratioW = std::max((double)((float)this->height() / minDimension), 1.0);
+    float right = 0.9 / ratioH;
+    float left = -1.0 * right;
+    float bottom = 0.9 / ratioW;
+    float top = -1.0 * bottom;
+
+    glTexCoord2f(0.0, 0.0); glVertex3f(left, top, -1);
+    glTexCoord2f(1.0, 0.0); glVertex3f(right, top, -1);
+    glTexCoord2f(1.0, 1.0); glVertex3f(right, bottom, -1);
+    glTexCoord2f(0.0, 1.0); glVertex3f(left, bottom, -1);
 
     glEnd();
 

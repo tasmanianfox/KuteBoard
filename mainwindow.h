@@ -4,6 +4,8 @@
 #include <QCoreApplication>
 #include <QMainWindow>
 
+#include "src/game/game.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -25,5 +27,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+
+    Game game;
 };
 #endif // MAINWINDOW_H

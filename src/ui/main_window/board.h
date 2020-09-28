@@ -1,11 +1,15 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#include <algorithm>
+
 #include <QGLWidget>
 #include <QWidget>
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
 #include <QDebug>
+
+#include "src/ui/texture.h"
 
 class Board : public QOpenGLWidget, protected QOpenGLFunctions
 {
@@ -16,8 +20,7 @@ protected:
     void initializeGL();
     void paintGL() Q_DECL_OVERRIDE;
 private:
-    QImage tex;
-    GLuint textureID;
+    Texture boardTexture;
 };
 
 #endif // BOARD_H

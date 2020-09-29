@@ -17,19 +17,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp \
+    src/ui/main_window/mainwindow.cpp \
     src/game/game.cpp \
     src/ui/main_window/board.cpp
 
 HEADERS += \
-    mainwindow.h \
+    src/ui/main_window/mainwindow.h \
     src/game/game.h \
     src/game/position.h \
     src/ui/main_window/board.h \
     src/ui/texture.h
 
 FORMS += \
-    mainwindow.ui
+    src/ui/main_window/mainwindow.ui
 
 TRANSLATIONS += \
     kuteboard_en_US.ts

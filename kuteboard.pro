@@ -25,8 +25,7 @@ HEADERS += \
     src/ui/main_window/mainwindow.h \
     src/game/game.h \
     src/game/position.h \
-    src/ui/main_window/board.h \
-    src/ui/texture.h
+    src/ui/main_window/board.h
 
 FORMS += \
     src/ui/main_window/mainwindow.ui

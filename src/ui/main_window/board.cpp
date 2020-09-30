@@ -62,10 +62,6 @@ void Board::paintGL()
 {
     glClearColor(0.16f, 0.16f, 0.16f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, this->textures[TEXTURE_BOARD]);
-
-    glBegin(GL_QUADS);
 
     float minDimension = std::min(this->width(), this->height());
     float ratioH = std::max((double)((float)this->width() / minDimension), 1.0);
@@ -75,22 +71,66 @@ void Board::paintGL()
     float bottom = 0.9 / ratioW;
     float top = -1.0 * bottom;
 
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, this->textures[TEXTURE_BOARD]);
+    glBegin(GL_QUADS);
     glTexCoord2f(0.0, 0.0); glVertex3f(left, top, -1);
     glTexCoord2f(1.0, 0.0); glVertex3f(right, top, -1);
     glTexCoord2f(1.0, 1.0); glVertex3f(right, bottom, -1);
     glTexCoord2f(0.0, 1.0); glVertex3f(left, bottom, -1);
-
-
     glEnd();
 
-    // Temporary: just for test
-    glBindTexture(GL_TEXTURE_2D, this->textures[TEXTURE_KNIGHT_WHITE]);
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0, 0.0); glVertex3f(left/8, top/8, -1);
-    glTexCoord2f(1.0, 0.0); glVertex3f(right/8, top/8, -1);
-    glTexCoord2f(1.0, 1.0); glVertex3f(right/8, bottom/8, -1);
-    glTexCoord2f(0.0, 1.0); glVertex3f(left/8, bottom/8, -1);
-    glEnd();
+    float rowWidth = (right - left) / NUM_ROWS;
+    float colHeight = (bottom - top) / NUM_COLS;
+    for (int y = 0; y < NUM_COLS; y++)
+    {
+        for (int x = 0; x < NUM_ROWS; x++)
+        {
+            float rowStart = left + (x * rowWidth);
+            float rowEnd = left + ((x+1) * rowWidth);
+            float colStart = left + (y * colHeight);
+            float colEnd = left + ((y+1) * colHeight);
+            int texture = -1;
+            switch(this->game->position[x][y])
+            {
+            case PIECE_WHITE_ROOK:
+                texture = TEXTURE_ROOK_WHITE; break;
+            case PIECE_WHITE_KNIGHT:
+                texture = TEXTURE_KNIGHT_WHITE; break;
+            case PIECE_WHITE_BISHOP:
+                texture = TEXTURE_BISHOP_WHITE; break;
+            case PIECE_WHITE_QUEEN:
+                texture = TEXTURE_QUEEN_WHITE; break;
+            case PIECE_WHITE_KING:
+                texture = TEXTURE_KING_WHITE; break;
+            case PIECE_WHITE_PAWN:
+                texture = TEXTURE_PAWN_WHITE; break;
+            case PIECE_BLACK_ROOK:
+                texture = TEXTURE_ROOK_BLACK; break;
+            case PIECE_BLACK_KNIGHT:
+                texture = TEXTURE_KNIGHT_BLACK; break;
+            case PIECE_BLACK_BISHOP:
+                texture = TEXTURE_BISHOP_BLACK; break;
+            case PIECE_BLACK_QUEEN:
+                texture = TEXTURE_QUEEN_BLACK; break;
+            case PIECE_BLACK_KING:
+                texture = TEXTURE_KING_BLACK; break;
+            case PIECE_BLACK_PAWN:
+                texture = TEXTURE_PAWN_BLACK; break;
+            }
+
+            if (texture >= 0)
+            {
+                glBindTexture(GL_TEXTURE_2D, this->textures[texture]);
+                glBegin(GL_QUADS);
+                glTexCoord2f(0.0, 0.0); glVertex3f(rowStart, colStart, -1);
+                glTexCoord2f(1.0, 0.0); glVertex3f(rowEnd, colStart, -1);
+                glTexCoord2f(1.0, 1.0); glVertex3f(rowEnd, colEnd, -1);
+                glTexCoord2f(0.0, 1.0); glVertex3f(rowStart, colEnd, -1);
+                glEnd();
+            }
+        }
+    }
 
     glDisable(GL_TEXTURE_2D);
 

@@ -4,6 +4,8 @@
 #include <QCoreApplication>
 #include <QMainWindow>
 
+
+#include "src/ui/main_window/board.h"
 #include "src/game/game.h"
 
 QT_BEGIN_NAMESPACE

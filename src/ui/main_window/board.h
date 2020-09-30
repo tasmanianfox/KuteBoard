@@ -12,6 +12,8 @@
 #include <QOpenGLFunctions>
 #include <QDebug>
 
+#include "src/game/game.h"
+
 #define TEXTURE_BOARD 0
 #define TEXTURE_PAWN_WHITE 1
 #define TEXTURE_KNIGHT_WHITE 2
@@ -35,12 +37,14 @@ class Board : public QOpenGLWidget, protected QOpenGLFunctions
     Q_OBJECT
 public:
     Board(QWidget *parent);
+
+    Game *game;
 protected:
-    void initializeGL();
+    void initializeGL() Q_DECL_OVERRIDE;
     void paintGL() Q_DECL_OVERRIDE;
 private:
     void loadTextures();
-    GLuint textures[13];
+    GLuint textures[TEXTURE_COUNT];
 };
 
 #endif // BOARD_H

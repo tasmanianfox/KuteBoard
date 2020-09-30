@@ -3,19 +3,22 @@
 
 #define EMPTY_SQUARE 0
 
-#define WHITE_PAWN 1
-#define WHITE_KNIGHT 2
-#define WHITE_BISHOP 3
-#define WHITE_ROOK 4
-#define WHITE_QUEEN 5
-#define WHITE_KING 6
+#define NUM_COLS 8
+#define NUM_ROWS 8
 
-#define BLACK_PAWN 11
-#define BLACK_KNIGHT 12
-#define BLACK_BISHOP 13
-#define BLACK_ROOK 14
-#define BLACK_QUEEN 15
-#define BLACK_KING 16
+#define PIECE_WHITE_PAWN 1
+#define PIECE_WHITE_KNIGHT 2
+#define PIECE_WHITE_BISHOP 3
+#define PIECE_WHITE_ROOK 4
+#define PIECE_WHITE_QUEEN 5
+#define PIECE_WHITE_KING 6
+
+#define PIECE_BLACK_PAWN 11
+#define PIECE_BLACK_KNIGHT 12
+#define PIECE_BLACK_BISHOP 13
+#define PIECE_BLACK_ROOK 14
+#define PIECE_BLACK_QUEEN 15
+#define PIECE_BLACK_KING 16
 
 // chess_position[0][0] = a1; // chess_position[7][0] = a8;
 // chess_position[0][7] = h1; // chess_position[7][7] = h8;

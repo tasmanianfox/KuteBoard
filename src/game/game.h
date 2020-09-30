@@ -9,7 +9,8 @@ public:
     Game();
 
     void newGame();
-private:
+    void setPosition(Position position);
+
     Position position;
 };
 

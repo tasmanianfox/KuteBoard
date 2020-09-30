@@ -26,7 +26,7 @@
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab">
          <property name="toolTip">
@@ -49,7 +49,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,1">
         <item>
-         <widget class="Board" name="openGLWidget"/>
+         <widget class="Board" name="board"/>
         </item>
         <item>
          <widget class="QFrame" name="frame">

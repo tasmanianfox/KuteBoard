@@ -26,11 +26,11 @@ void Game::newGame()
 
 void Game::setPosition(Position pos)
 {
-    for (int y = 0; y < NUM_COLS; y++)
+    for (int y = 0; y < NUM_ROWS; y++)
     {
-        for (int x = 0; x < NUM_ROWS; x++)
+        for (int x = 0; x < NUM_COLS; x++)
         {
-            this->position[x][y] = pos[x][y];
+            this->position[y][x] = pos[y][x];
         }
     }
 }

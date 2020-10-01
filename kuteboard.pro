@@ -1,5 +1,7 @@
 QT       += core gui opengl
 
+win32:CONFIG (release, debug|release): LIBS += opengl32.lib
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
@@ -33,7 +35,6 @@ FORMS += \
 TRANSLATIONS += \
     kuteboard_en_US.ts
 
-LIBS += opengl32.lib
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

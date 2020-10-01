@@ -58,6 +58,8 @@ void Board::initializeGL()
     glDisable(GL_TEXTURE_2D);
 }
 
+
+
 void Board::paintGL()
 {
     glClearColor(0.16f, 0.16f, 0.16f, 1.0f);
@@ -68,30 +70,30 @@ void Board::paintGL()
     float ratioW = std::max((double)((float)this->height() / minDimension), 1.0);
     float right = 0.9 / ratioH;
     float left = -1.0 * right;
-    float bottom = 0.9 / ratioW;
-    float top = -1.0 * bottom;
+    float top = 0.9 / ratioW;
+    float bottom = -1.0 * top;
 
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, this->textures[TEXTURE_BOARD]);
     glBegin(GL_QUADS);
-    glTexCoord2f(0.0, 0.0); glVertex3f(left, top, -1);
-    glTexCoord2f(1.0, 0.0); glVertex3f(right, top, -1);
-    glTexCoord2f(1.0, 1.0); glVertex3f(right, bottom, -1);
-    glTexCoord2f(0.0, 1.0); glVertex3f(left, bottom, -1);
+    glTexCoord2f(0.0, 1.0); glVertex3f(left, top, -1);
+    glTexCoord2f(1.0, 1.0); glVertex3f(right, top, -1);
+    glTexCoord2f(1.0, 0.0); glVertex3f(right, bottom, -1);
+    glTexCoord2f(0.0, 0.0); glVertex3f(left, bottom, -1);
     glEnd();
 
-    float rowWidth = (right - left) / NUM_ROWS;
-    float colHeight = (bottom - top) / NUM_COLS;
+    float colWidth = (right - left) / NUM_COLS;
+    float rowHeight = (top - bottom) / NUM_ROWS;
     for (int y = 0; y < NUM_COLS; y++)
     {
+        float rowStart = bottom + (y * rowHeight);
+        float rowEnd = bottom + ((y+1) * rowHeight);
         for (int x = 0; x < NUM_ROWS; x++)
         {
-            float rowStart = left + (x * rowWidth);
-            float rowEnd = left + ((x+1) * rowWidth);
-            float colStart = left + (y * colHeight);
-            float colEnd = left + ((y+1) * colHeight);
+            float colStart = left + (x * colWidth);
+            float colEnd = left + ((x+1) * colWidth);
             int texture = -1;
-            switch(this->game->position[x][y])
+            switch(this->game->position[y][x])
             {
             case PIECE_WHITE_ROOK:
                 texture = TEXTURE_ROOK_WHITE; break;
@@ -119,16 +121,15 @@ void Board::paintGL()
                 texture = TEXTURE_PAWN_BLACK; break;
             }
 
-            if (texture >= 0)
-            {
-                glBindTexture(GL_TEXTURE_2D, this->textures[texture]);
-                glBegin(GL_QUADS);
-                glTexCoord2f(0.0, 0.0); glVertex3f(rowStart, colStart, -1);
-                glTexCoord2f(1.0, 0.0); glVertex3f(rowEnd, colStart, -1);
-                glTexCoord2f(1.0, 1.0); glVertex3f(rowEnd, colEnd, -1);
-                glTexCoord2f(0.0, 1.0); glVertex3f(rowStart, colEnd, -1);
-                glEnd();
-            }
+            if (0 > texture) continue;
+
+            glBindTexture(GL_TEXTURE_2D, this->textures[texture]);
+            glBegin(GL_QUADS);
+            glTexCoord2f(0.0, 1.0); glVertex2f(colStart, rowEnd);
+            glTexCoord2f(1.0, 1.0); glVertex2f(colEnd, rowEnd);
+            glTexCoord2f(1.0, 0.0); glVertex2f(colEnd, rowStart);
+            glTexCoord2f(0.0, 0.0); glVertex2f(colStart, rowStart);
+            glEnd();
         }
     }
 

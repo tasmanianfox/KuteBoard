@@ -32,6 +32,13 @@
 
 using namespace std;
 
+struct BoardGlBounds {
+    float bottom;
+    float left;
+    float right;
+    float top;
+};
+
 class Board : public QOpenGLWidget, protected QOpenGLFunctions
 {
     Q_OBJECT
@@ -44,7 +51,12 @@ protected:
     void paintGL() Q_DECL_OVERRIDE;
 private:
     void loadTextures();
+
+    void paintBoard(BoardGlBounds bounds);
+    void paintPieces(BoardGlBounds bounds);
+
     GLuint textures[TEXTURE_COUNT];
 };
+
 
 #endif // BOARD_H

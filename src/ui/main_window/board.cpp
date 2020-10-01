@@ -1,7 +1,7 @@
 #include "board.h"
 
 static map<int, string> textureMapping = {
-    { TEXTURE_BOARD, "../../resources/images/boards/board_white_black_1.png" },
+    { TEXTURE_BOARD, "../../resources/images/boards/board2.png" },
     { TEXTURE_PAWN_WHITE, "../../resources/images/pieces/standard1/pawn_w.png" },
     { TEXTURE_KNIGHT_WHITE, "../../resources/images/pieces/standard1/knight_w.png" },
     { TEXTURE_BISHOP_WHITE, "../../resources/images/pieces/standard1/bishop_w.png" },
@@ -26,21 +26,16 @@ void Board::loadTextures()
     map<int, string>::iterator it;
     for (it = textureMapping.begin(); it != textureMapping.end(); it++)
     {
-        QImage image;
-        if(!image.load(it->second.c_str()))
+        QImage tex;
+        if(!tex.load(it->second.c_str()))
         {
             QMessageBox::critical(NULL, "Error", QString("Cannot load a texture: ") + QString(it->second.c_str()));
             exit(-1);
         }
-        QImage tex = QGLWidget::convertToGLFormat(image);
+        tex = QGLWidget::convertToGLFormat(tex);
 
         glBindTexture(GL_TEXTURE_2D, this->textures[it->first]); // Set as the current texture
-
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
-
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex.width(), tex.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, tex.bits());
-
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
     }
@@ -50,15 +45,16 @@ void Board::initializeGL()
 {
     initializeOpenGLFunctions();
 
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
     glEnable(GL_TEXTURE_2D); // Enable texturing
     glGenTextures(13, this->textures); // Obtain an id for the texture
+
 
     loadTextures();
 
     glDisable(GL_TEXTURE_2D);
 }
-
-
 
 void Board::paintGL()
 {
@@ -68,30 +64,41 @@ void Board::paintGL()
     float minDimension = std::min(this->width(), this->height());
     float ratioH = std::max((double)((float)this->width() / minDimension), 1.0);
     float ratioW = std::max((double)((float)this->height() / minDimension), 1.0);
-    float right = 0.9 / ratioH;
-    float left = -1.0 * right;
-    float top = 0.9 / ratioW;
-    float bottom = -1.0 * top;
+    BoardGlBounds bounds;
+    bounds.right = 0.9 / ratioH;
+    bounds.left = -1.0 * bounds.right;
+    bounds.top = 0.9 / ratioW;
+    bounds.bottom = -1.0 * bounds.top;
 
     glEnable(GL_TEXTURE_2D);
+    paintBoard(bounds);
+    paintPieces(bounds);
+    glDisable(GL_TEXTURE_2D);
+}
+
+void Board::paintBoard(BoardGlBounds bounds)
+{
     glBindTexture(GL_TEXTURE_2D, this->textures[TEXTURE_BOARD]);
     glBegin(GL_QUADS);
-    glTexCoord2f(0.0, 1.0); glVertex3f(left, top, -1);
-    glTexCoord2f(1.0, 1.0); glVertex3f(right, top, -1);
-    glTexCoord2f(1.0, 0.0); glVertex3f(right, bottom, -1);
-    glTexCoord2f(0.0, 0.0); glVertex3f(left, bottom, -1);
+    glTexCoord2f(0.0, 1.0); glVertex3f(bounds.left, bounds.top, -1);
+    glTexCoord2f(1.0, 1.0); glVertex3f(bounds.right, bounds.top, -1);
+    glTexCoord2f(1.0, 0.0); glVertex3f(bounds.right, bounds.bottom, -1);
+    glTexCoord2f(0.0, 0.0); glVertex3f(bounds.left, bounds.bottom, -1);
     glEnd();
+}
 
-    float colWidth = (right - left) / NUM_COLS;
-    float rowHeight = (top - bottom) / NUM_ROWS;
+void Board::paintPieces(BoardGlBounds bounds)
+{
+    float colWidth = (bounds.right - bounds.left) / NUM_COLS;
+    float rowHeight = (bounds.top - bounds.bottom) / NUM_ROWS;
     for (int y = 0; y < NUM_COLS; y++)
     {
-        float rowStart = bottom + (y * rowHeight);
-        float rowEnd = bottom + ((y+1) * rowHeight);
+        float rowStart = bounds.bottom + (y * rowHeight);
+        float rowEnd = bounds.bottom + ((y+1) * rowHeight);
         for (int x = 0; x < NUM_ROWS; x++)
         {
-            float colStart = left + (x * colWidth);
-            float colEnd = left + ((x+1) * colWidth);
+            float colStart = bounds.left + (x * colWidth);
+            float colEnd = bounds.left + ((x+1) * colWidth);
             int texture = -1;
             switch(this->game->position[y][x])
             {
@@ -132,7 +139,4 @@ void Board::paintGL()
             glEnd();
         }
     }
-
-    glDisable(GL_TEXTURE_2D);
-
 }

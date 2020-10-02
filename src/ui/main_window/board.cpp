@@ -2,18 +2,18 @@
 
 static map<int, string> textureMapping = {
     { TEXTURE_BOARD, "../../resources/images/boards/board2.png" },
-    { TEXTURE_PAWN_WHITE, "../../resources/images/pieces/standard1/pawn_w.png" },
-    { TEXTURE_KNIGHT_WHITE, "../../resources/images/pieces/standard1/knight_w.png" },
-    { TEXTURE_BISHOP_WHITE, "../../resources/images/pieces/standard1/bishop_w.png" },
-    { TEXTURE_ROOK_WHITE, "../../resources/images/pieces/standard1/rook_w.png" },
-    { TEXTURE_QUEEN_WHITE, "../../resources/images/pieces/standard1/queen_w.png" },
-    { TEXTURE_KING_WHITE, "../../resources/images/pieces/standard1/king_w.png" },
-    { TEXTURE_PAWN_BLACK, "../../resources/images/pieces/standard1/pawn_b.png" },
-    { TEXTURE_KNIGHT_BLACK, "../../resources/images/pieces/standard1/knight_b.png" },
-    { TEXTURE_BISHOP_BLACK, "../../resources/images/pieces/standard1/bishop_b.png" },
-    { TEXTURE_ROOK_BLACK, "../../resources/images/pieces/standard1/rook_b.png" },
-    { TEXTURE_QUEEN_BLACK, "../../resources/images/pieces/standard1/queen_b.png" },
-    { TEXTURE_KING_BLACK, "../../resources/images/pieces/standard1/king_b.png" },
+    { TEXTURE_WHITE_PAWN, "../../resources/images/pieces/standard1/pawn_w.png" },
+    { TEXTURE_WHITE_KNIGHT, "../../resources/images/pieces/standard1/knight_w.png" },
+    { TEXTURE_WHITE_BISHOP, "../../resources/images/pieces/standard1/bishop_w.png" },
+    { TEXTURE_WHITE_ROOK, "../../resources/images/pieces/standard1/rook_w.png" },
+    { TEXTURE_WHITE_QUEEN, "../../resources/images/pieces/standard1/queen_w.png" },
+    { TEXTURE_WHITE_KING, "../../resources/images/pieces/standard1/king_w.png" },
+    { TEXTURE_BLACK_PAWN, "../../resources/images/pieces/standard1/pawn_b.png" },
+    { TEXTURE_BLACK_KNIGHT, "../../resources/images/pieces/standard1/knight_b.png" },
+    { TEXTURE_BLACK_BISHOP, "../../resources/images/pieces/standard1/bishop_b.png" },
+    { TEXTURE_BLACK_ROOK, "../../resources/images/pieces/standard1/rook_b.png" },
+    { TEXTURE_BLACK_QUEEN, "../../resources/images/pieces/standard1/queen_b.png" },
+    { TEXTURE_BLACK_KING, "../../resources/images/pieces/standard1/king_b.png" },
 };
 
 Board::Board(QWidget *parent): QOpenGLWidget(parent)
@@ -103,29 +103,29 @@ void Board::paintPieces(BoardGlBounds bounds)
             switch(this->game->position[y][x])
             {
             case PIECE_WHITE_ROOK:
-                texture = TEXTURE_ROOK_WHITE; break;
+                texture = TEXTURE_WHITE_ROOK; break;
             case PIECE_WHITE_KNIGHT:
-                texture = TEXTURE_KNIGHT_WHITE; break;
+                texture = TEXTURE_WHITE_KNIGHT; break;
             case PIECE_WHITE_BISHOP:
-                texture = TEXTURE_BISHOP_WHITE; break;
+                texture = TEXTURE_WHITE_BISHOP; break;
             case PIECE_WHITE_QUEEN:
-                texture = TEXTURE_QUEEN_WHITE; break;
+                texture = TEXTURE_WHITE_QUEEN; break;
             case PIECE_WHITE_KING:
-                texture = TEXTURE_KING_WHITE; break;
+                texture = TEXTURE_WHITE_KING; break;
             case PIECE_WHITE_PAWN:
-                texture = TEXTURE_PAWN_WHITE; break;
+                texture = TEXTURE_WHITE_PAWN; break;
             case PIECE_BLACK_ROOK:
-                texture = TEXTURE_ROOK_BLACK; break;
+                texture = TEXTURE_BLACK_ROOK; break;
             case PIECE_BLACK_KNIGHT:
-                texture = TEXTURE_KNIGHT_BLACK; break;
+                texture = TEXTURE_BLACK_KNIGHT; break;
             case PIECE_BLACK_BISHOP:
-                texture = TEXTURE_BISHOP_BLACK; break;
+                texture = TEXTURE_BLACK_BISHOP; break;
             case PIECE_BLACK_QUEEN:
-                texture = TEXTURE_QUEEN_BLACK; break;
+                texture = TEXTURE_BLACK_QUEEN; break;
             case PIECE_BLACK_KING:
-                texture = TEXTURE_KING_BLACK; break;
+                texture = TEXTURE_BLACK_KING; break;
             case PIECE_BLACK_PAWN:
-                texture = TEXTURE_PAWN_BLACK; break;
+                texture = TEXTURE_BLACK_PAWN; break;
             }
 
             if (0 > texture) continue;

@@ -19,15 +19,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
+    src/ui/geometry.cpp \
     src/ui/main_window/mainwindow.cpp \
     src/game/game.cpp \
-    src/ui/main_window/board.cpp
+    src/ui/main_window/board.cpp \
+    src/ui/opengl_utils.cpp
 
 HEADERS += \
+    src/ui/geometry.h \
     src/ui/main_window/mainwindow.h \
     src/game/game.h \
     src/game/position.h \
-    src/ui/main_window/board.h
+    src/ui/main_window/board.h \
+    src/ui/opengl_utils.h
 
 FORMS += \
     src/ui/main_window/mainwindow.ui

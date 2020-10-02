@@ -13,6 +13,8 @@
 #include <QDebug>
 
 #include "src/game/game.h"
+#include "src/ui/geometry.h"
+#include "src/ui/opengl_utils.h"
 
 #define TEXTURE_BOARD 0
 #define TEXTURE_WHITE_PAWN 1
@@ -32,13 +34,6 @@
 
 using namespace std;
 
-struct BoardGlBounds {
-    float bottom;
-    float left;
-    float right;
-    float top;
-};
-
 class Board : public QOpenGLWidget, protected QOpenGLFunctions
 {
     Q_OBJECT
@@ -52,10 +47,11 @@ protected:
 private:
     void loadTextures();
 
-    void paintBoard(BoardGlBounds bounds);
-    void paintPieces(BoardGlBounds bounds);
+    void paintBoard(Rectangle bounds);
+    void paintPieces(Rectangle bounds);
 
     GLuint textures[TEXTURE_COUNT];
+    Rectangle cellCoordinates[NUM_ROWS][NUM_COLS];
 };
 
 

@@ -64,11 +64,9 @@ void Board::paintGL()
     float minDimension = std::min(this->width(), this->height());
     float ratioH = std::max((double)((float)this->width() / minDimension), 1.0);
     float ratioW = std::max((double)((float)this->height() / minDimension), 1.0);
-    BoardGlBounds bounds;
-    bounds.right = 0.9 / ratioH;
-    bounds.left = -1.0 * bounds.right;
-    bounds.top = 0.9 / ratioW;
-    bounds.bottom = -1.0 * bounds.top;
+    float right = 0.9 / ratioH;
+    float top = 0.9 / ratioW;
+    Rectangle bounds(-1.0 * right, -1.0 * top, right, top);
 
     glEnable(GL_TEXTURE_2D);
     paintBoard(bounds);
@@ -76,29 +74,23 @@ void Board::paintGL()
     glDisable(GL_TEXTURE_2D);
 }
 
-void Board::paintBoard(BoardGlBounds bounds)
+void Board::paintBoard(Rectangle bounds)
 {
-    glBindTexture(GL_TEXTURE_2D, this->textures[TEXTURE_BOARD]);
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0, 1.0); glVertex3f(bounds.left, bounds.top, -1);
-    glTexCoord2f(1.0, 1.0); glVertex3f(bounds.right, bounds.top, -1);
-    glTexCoord2f(1.0, 0.0); glVertex3f(bounds.right, bounds.bottom, -1);
-    glTexCoord2f(0.0, 0.0); glVertex3f(bounds.left, bounds.bottom, -1);
-    glEnd();
+    drawTextureAtRectangle(this->textures[TEXTURE_BOARD], bounds);
 }
 
-void Board::paintPieces(BoardGlBounds bounds)
+void Board::paintPieces(Rectangle bounds)
 {
-    float colWidth = (bounds.right - bounds.left) / NUM_COLS;
-    float rowHeight = (bounds.top - bounds.bottom) / NUM_ROWS;
+    float colWidth = (bounds.x1 - bounds.x0) / NUM_COLS;
+    float rowHeight = (bounds.y1 - bounds.y0) / NUM_ROWS;
     for (int y = 0; y < NUM_COLS; y++)
     {
-        float rowStart = bounds.bottom + (y * rowHeight);
-        float rowEnd = bounds.bottom + ((y+1) * rowHeight);
+        float rowStart = bounds.y0 + (y * rowHeight);
+        float rowEnd = bounds.y0 + ((y+1) * rowHeight);
         for (int x = 0; x < NUM_ROWS; x++)
         {
-            float colStart = bounds.left + (x * colWidth);
-            float colEnd = bounds.left + ((x+1) * colWidth);
+            float colStart = bounds.x0 + (x * colWidth);
+            float colEnd = bounds.x0 + ((x+1) * colWidth);
             int texture = -1;
             switch(this->game->position[y][x])
             {
@@ -130,13 +122,8 @@ void Board::paintPieces(BoardGlBounds bounds)
 
             if (0 > texture) continue;
 
-            glBindTexture(GL_TEXTURE_2D, this->textures[texture]);
-            glBegin(GL_QUADS);
-            glTexCoord2f(0.0, 1.0); glVertex2f(colStart, rowEnd);
-            glTexCoord2f(1.0, 1.0); glVertex2f(colEnd, rowEnd);
-            glTexCoord2f(1.0, 0.0); glVertex2f(colEnd, rowStart);
-            glTexCoord2f(0.0, 0.0); glVertex2f(colStart, rowStart);
-            glEnd();
+            this->cellCoordinates[y][x] = Rectangle(colStart, rowStart, colEnd, rowEnd);
+            drawTextureAtRectangle(this->textures[texture], this->cellCoordinates[y][x]);
         }
     }
 }

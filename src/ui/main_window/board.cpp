@@ -49,8 +49,6 @@ void Board::initializeGL()
     glEnable(GL_BLEND);
     glEnable(GL_TEXTURE_2D); // Enable texturing
     glGenTextures(13, this->textures); // Obtain an id for the texture
-
-
     loadTextures();
 
     glDisable(GL_TEXTURE_2D);
@@ -91,39 +89,46 @@ void Board::paintPieces(Rectangle bounds)
         {
             float colStart = bounds.x0 + (x * colWidth);
             float colEnd = bounds.x0 + ((x+1) * colWidth);
-            int texture = -1;
-            switch(this->game->position[y][x])
-            {
-            case PIECE_WHITE_ROOK:
-                texture = TEXTURE_WHITE_ROOK; break;
-            case PIECE_WHITE_KNIGHT:
-                texture = TEXTURE_WHITE_KNIGHT; break;
-            case PIECE_WHITE_BISHOP:
-                texture = TEXTURE_WHITE_BISHOP; break;
-            case PIECE_WHITE_QUEEN:
-                texture = TEXTURE_WHITE_QUEEN; break;
-            case PIECE_WHITE_KING:
-                texture = TEXTURE_WHITE_KING; break;
-            case PIECE_WHITE_PAWN:
-                texture = TEXTURE_WHITE_PAWN; break;
-            case PIECE_BLACK_ROOK:
-                texture = TEXTURE_BLACK_ROOK; break;
-            case PIECE_BLACK_KNIGHT:
-                texture = TEXTURE_BLACK_KNIGHT; break;
-            case PIECE_BLACK_BISHOP:
-                texture = TEXTURE_BLACK_BISHOP; break;
-            case PIECE_BLACK_QUEEN:
-                texture = TEXTURE_BLACK_QUEEN; break;
-            case PIECE_BLACK_KING:
-                texture = TEXTURE_BLACK_KING; break;
-            case PIECE_BLACK_PAWN:
-                texture = TEXTURE_BLACK_PAWN; break;
-            }
 
+            int texture = this->getTextureForPiece(this->game->position[y][x]);
             if (0 > texture) continue;
 
             this->cellCoordinates[y][x] = Rectangle(colStart, rowStart, colEnd, rowEnd);
             drawTextureAtRectangle(this->textures[texture], this->cellCoordinates[y][x]);
         }
     }
+}
+
+int Board::getTextureForPiece(unsigned short int piece)
+{
+    int texture = -1;
+    switch(piece)
+    {
+    case PIECE_WHITE_ROOK:
+        texture = TEXTURE_WHITE_ROOK; break;
+    case PIECE_WHITE_KNIGHT:
+        texture = TEXTURE_WHITE_KNIGHT; break;
+    case PIECE_WHITE_BISHOP:
+        texture = TEXTURE_WHITE_BISHOP; break;
+    case PIECE_WHITE_QUEEN:
+        texture = TEXTURE_WHITE_QUEEN; break;
+    case PIECE_WHITE_KING:
+        texture = TEXTURE_WHITE_KING; break;
+    case PIECE_WHITE_PAWN:
+        texture = TEXTURE_WHITE_PAWN; break;
+    case PIECE_BLACK_ROOK:
+        texture = TEXTURE_BLACK_ROOK; break;
+    case PIECE_BLACK_KNIGHT:
+        texture = TEXTURE_BLACK_KNIGHT; break;
+    case PIECE_BLACK_BISHOP:
+        texture = TEXTURE_BLACK_BISHOP; break;
+    case PIECE_BLACK_QUEEN:
+        texture = TEXTURE_BLACK_QUEEN; break;
+    case PIECE_BLACK_KING:
+        texture = TEXTURE_BLACK_KING; break;
+    case PIECE_BLACK_PAWN:
+        texture = TEXTURE_BLACK_PAWN; break;
+    }
+
+    return texture;
 }

@@ -46,6 +46,7 @@ protected:
     void paintGL() Q_DECL_OVERRIDE;
 private:
     void loadTextures();
+    int getTextureForPiece(unsigned short int piece);
 
     void paintBoard(Rectangle bounds);
     void paintPieces(Rectangle bounds);

@@ -19,6 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
+    src/game/position.cpp \
     src/ui/geometry.cpp \
     src/ui/main_window/mainwindow.cpp \
     src/game/game.cpp \

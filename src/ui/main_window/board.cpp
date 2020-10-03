@@ -18,7 +18,7 @@ static map<int, string> textureMapping = {
 
 Board::Board(QWidget *parent): QOpenGLWidget(parent)
 {
-
+    this->activeCell = CellName(-1, -1);
 }
 
 void Board::loadTextures()
@@ -50,9 +50,10 @@ void Board::initializeGL()
     glEnable(GL_TEXTURE_2D); // Enable texturing
     glGenTextures(13, this->textures); // Obtain an id for the texture
     loadTextures();
-
     glDisable(GL_TEXTURE_2D);
 }
+
+#include <QDebug>
 
 void Board::paintGL()
 {
@@ -67,8 +68,10 @@ void Board::paintGL()
     Rectangle bounds(-1.0 * right, -1.0 * top, right, top);
 
     glEnable(GL_TEXTURE_2D);
+    calculateCellCoordinates(bounds);
     paintBoard(bounds);
-    paintPieces(bounds);
+    paintCellSelection();
+    paintPieces();
     glDisable(GL_TEXTURE_2D);
 }
 
@@ -77,29 +80,20 @@ void Board::paintBoard(Rectangle bounds)
     drawTextureAtRectangle(this->textures[TEXTURE_BOARD], bounds);
 }
 
-void Board::paintPieces(Rectangle bounds)
+void Board::paintPieces()
 {
-    float colWidth = (bounds.x1 - bounds.x0) / NUM_COLS;
-    float rowHeight = (bounds.y1 - bounds.y0) / NUM_ROWS;
     for (int y = 0; y < NUM_COLS; y++)
     {
-        float rowStart = bounds.y0 + (y * rowHeight);
-        float rowEnd = bounds.y0 + ((y+1) * rowHeight);
         for (int x = 0; x < NUM_ROWS; x++)
         {
-            float colStart = bounds.x0 + (x * colWidth);
-            float colEnd = bounds.x0 + ((x+1) * colWidth);
-
             int texture = this->getTextureForPiece(this->game->position[y][x]);
             if (0 > texture) continue;
-
-            this->cellCoordinates[y][x] = Rectangle(colStart, rowStart, colEnd, rowEnd);
             drawTextureAtRectangle(this->textures[texture], this->cellCoordinates[y][x]);
         }
     }
 }
 
-int Board::getTextureForPiece(unsigned short int piece)
+int Board::getTextureForPiece(short int piece)
 {
     int texture = -1;
     switch(piece)
@@ -131,4 +125,71 @@ int Board::getTextureForPiece(unsigned short int piece)
     }
 
     return texture;
+}
+
+void Board::mousePressEvent(QMouseEvent *event)
+ {
+    float glY = (this->height() - event->localPos().y()) / this->height()* 2 - 1;
+    int row = -1;
+    for (int i = 0; i < NUM_ROWS; i++)
+    {
+        if (this->cellCoordinates[i][0].y1 >= glY)
+        {
+            if (this->cellCoordinates[i][0].y0 <= glY)
+            {
+                row = i;
+            }
+            break;
+        }
+    }
+
+    float glX = event->localPos().x() / this->width() * 2 - 1;
+    int col = -1;
+    for (int i = 0; i < NUM_COLS; i++)
+    {
+        if (this->cellCoordinates[0][i].x1 >= glX)
+        {
+            if (this->cellCoordinates[0][i].x0 <= glX)
+            {
+                col = i;
+            }
+            break;
+        }
+    }
+    this->activeCell = CellName(row, col);
+    this->update();
+ }
+
+void Board::calculateCellCoordinates(Rectangle bounds)
+{
+    float colWidth = (bounds.x1 - bounds.x0) / NUM_COLS;
+    float rowHeight = (bounds.y1 - bounds.y0) / NUM_ROWS;
+    for (int y = 0; y < NUM_COLS; y++)
+    {
+        float rowStart = bounds.y0 + (y * rowHeight);
+        float rowEnd = bounds.y0 + ((y+1) * rowHeight);
+        for (int x = 0; x < NUM_ROWS; x++)
+        {
+            float colStart = bounds.x0 + (x * colWidth);
+            float colEnd = bounds.x0 + ((x+1.0) * colWidth);
+            this->cellCoordinates[y][x] = Rectangle(colStart, rowStart, colEnd, rowEnd);
+        }
+    }
+}
+
+void Board::paintCellSelection()
+{
+    if (!(this->activeCell.col > -1 && this->activeCell.row > -1)) {
+        return;
+    }
+
+    Rectangle activeCellCoordinates = this->cellCoordinates[this->activeCell.row][this->activeCell.col];
+    glColor4f(0.0, 0.5, 0.0, 1.0);
+    glBegin(GL_QUADS);
+    glVertex2f(activeCellCoordinates.x0, activeCellCoordinates.y0);
+    glVertex2f(activeCellCoordinates.x0, activeCellCoordinates.y1);
+    glVertex2f(activeCellCoordinates.x1, activeCellCoordinates.y1);
+    glVertex2f(activeCellCoordinates.x1, activeCellCoordinates.y0);
+    glEnd();
+    glColor4f(1.f, 1.f, 1.f, 1.f);
 }

@@ -10,9 +10,10 @@
 #include <QWidget>
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
-#include <QDebug>
+#include <QMouseEvent>
 
 #include "src/game/game.h"
+#include "src/game/position.h"
 #include "src/ui/geometry.h"
 #include "src/ui/opengl_utils.h"
 
@@ -45,14 +46,20 @@ protected:
     void initializeGL() Q_DECL_OVERRIDE;
     void paintGL() Q_DECL_OVERRIDE;
 private:
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+
     void loadTextures();
-    int getTextureForPiece(unsigned short int piece);
+    int getTextureForPiece(short int piece);
+
+    void calculateCellCoordinates(Rectangle bounds);
 
     void paintBoard(Rectangle bounds);
-    void paintPieces(Rectangle bounds);
+    void paintCellSelection();
+    void paintPieces();
 
     GLuint textures[TEXTURE_COUNT];
     Rectangle cellCoordinates[NUM_ROWS][NUM_COLS];
+    CellName activeCell;
 };
 
 

@@ -1,7 +1,7 @@
 #ifndef POSITION_H
 #define POSITION_H
 
-#define EMPTY_SQUARE 0
+#define EMPTY_SQUARE -1
 
 #define NUM_COLS 8
 #define NUM_ROWS 8
@@ -22,6 +22,16 @@
 
 // chess_position[0][0] = a1; // chess_position[7][0] = a8;
 // chess_position[0][7] = h1; // chess_position[7][7] = h8;
-typedef unsigned short int Position[8][8];
+typedef short int Position[8][8];
+
+class CellName
+{
+public:
+    short int col;
+    short int row;
+
+    CellName();
+    CellName(short int row, short int col);
+};
 
 #endif // POSITION_H

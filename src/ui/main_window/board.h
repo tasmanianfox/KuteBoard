@@ -57,6 +57,8 @@ private:
     void paintCellSelection();
     void paintPieces();
 
+    bool isCellSelected();
+
     GLuint textures[TEXTURE_COUNT];
     Rectangle cellCoordinates[NUM_ROWS][NUM_COLS];
     CellName activeCell;

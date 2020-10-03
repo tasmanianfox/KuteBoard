@@ -156,7 +156,16 @@ void Board::mousePressEvent(QMouseEvent *event)
             break;
         }
     }
-    this->activeCell = CellName(row, col);
+    bool isPieceSelected = this->game->position[row][col] != EMPTY_SQUARE;
+    bool isCellClicked = col > -1 && row > -1;
+    bool isTheSameCellClicked = isCellClicked && this->activeCell.col == col && this->activeCell.row == row;
+    if ((!this->isCellSelected() && isPieceSelected))
+    {
+        this->activeCell = CellName(row, col);
+    } else if (isTheSameCellClicked) {
+        this->activeCell = CellName(-1, -1);
+    }
+
     this->update();
  }
 
@@ -192,4 +201,9 @@ void Board::paintCellSelection()
     glVertex2f(activeCellCoordinates.x1, activeCellCoordinates.y0);
     glEnd();
     glColor4f(1.f, 1.f, 1.f, 1.f);
+}
+
+bool Board::isCellSelected()
+{
+    return this->activeCell.col >= 0 && this->activeCell.row >= 0;
 }

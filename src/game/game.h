@@ -1,7 +1,11 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "position.h"
+#include <string>
+
+#include "src/game/position.h"
+
+using namespace std;
 
 class Game
 {
@@ -9,7 +13,6 @@ public:
     Game();
 
     void newGame();
-    void setPosition(Position position);
 
     Position position;
 };

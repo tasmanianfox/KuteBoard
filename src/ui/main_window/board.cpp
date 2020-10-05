@@ -18,7 +18,7 @@ static map<int, string> textureMapping = {
 
 Board::Board(QWidget *parent): QOpenGLWidget(parent)
 {
-    this->activeCell = CellName(-1, -1);
+    this->activeCell = Cell(-1, -1);
 }
 
 void Board::loadTextures()
@@ -86,7 +86,7 @@ void Board::paintPieces()
     {
         for (int x = 0; x < NUM_ROWS; x++)
         {
-            int texture = this->getTextureForPiece(this->game->position[y][x]);
+            int texture = this->getTextureForPiece(this->game->position.board[y][x]);
             if (0 > texture) continue;
             drawTextureAtRectangle(this->textures[texture], this->cellCoordinates[y][x]);
         }
@@ -156,14 +156,14 @@ void Board::mousePressEvent(QMouseEvent *event)
             break;
         }
     }
-    bool isPieceSelected = this->game->position[row][col] != EMPTY_SQUARE;
+    bool isPieceSelected = this->game->position.board[row][col] != PIECE_EMPTY_SQUARE;
     bool isCellClicked = col > -1 && row > -1;
     bool isTheSameCellClicked = isCellClicked && this->activeCell.col == col && this->activeCell.row == row;
     if ((!this->isCellSelected() && isPieceSelected))
     {
-        this->activeCell = CellName(row, col);
+        this->activeCell = Cell(row, col);
     } else if (isTheSameCellClicked) {
-        this->activeCell = CellName(-1, -1);
+        this->activeCell = Cell(-1, -1);
     }
 
     this->update();

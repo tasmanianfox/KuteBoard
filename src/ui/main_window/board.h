@@ -12,10 +12,12 @@
 #include <QOpenGLFunctions>
 #include <QMouseEvent>
 
+#include "src/game/cell.h"
 #include "src/game/game.h"
 #include "src/game/position.h"
 #include "src/ui/geometry.h"
 #include "src/ui/opengl_utils.h"
+#include "src/game/pieces.h"
 
 #define TEXTURE_BOARD 0
 #define TEXTURE_WHITE_PAWN 1
@@ -61,7 +63,7 @@ private:
 
     GLuint textures[TEXTURE_COUNT];
     Rectangle cellCoordinates[NUM_ROWS][NUM_COLS];
-    CellName activeCell;
+    Cell activeCell;
 };
 
 

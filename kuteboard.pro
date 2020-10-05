@@ -19,6 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
+    src/game/cell.cpp \
     src/game/position.cpp \
     src/ui/geometry.cpp \
     src/ui/main_window/mainwindow.cpp \
@@ -27,6 +28,10 @@ SOURCES += \
     src/ui/opengl_utils.cpp
 
 HEADERS += \
+    src/game/board_cells.h \
+    src/game/cell.h \
+    src/game/pieces.h \
+    src/game/position_fen.h \
     src/ui/geometry.h \
     src/ui/main_window/mainwindow.h \
     src/game/game.h \
